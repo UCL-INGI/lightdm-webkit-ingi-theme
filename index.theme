@@ -1,0 +1,6 @@
+[theme]
+name=Ingi
+description=INGI Theme
+engine=lightdm-webkit-greeter
+url=index.html
+session=xfce

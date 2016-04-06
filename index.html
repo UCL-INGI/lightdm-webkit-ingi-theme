@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" src="css/blockrain.css">
+	<style>
+		@font-face {
+			font-family: 'yanone';
+			src: url('fonts/YanoneKaffeesatz-Regular.otf') format('truetype');
+			font-weight: normal;
+			font-style: normal;
+		}
+		
+		html, body {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			margin: 0;
+			/*font-family: 'yanone';*/
+		}
+
+		body {
+			background-image: url('wallpaper.jpg');
+		}
+		
+		#hostname {
+			position: absolute;
+			bottom: 20px;
+			left: 20px;
+			color: white;
+			font-size: 20px;
+			font-family: 'yanone';
+		}
+		
+		#hour {
+			position: absolute;
+			bottom: 60px;
+			left: 20px;
+			color: white;
+			font-size: 30px;
+			font-family: 'yanone';
+		}
+		
+		.game {
+			width: 250px;
+			height: 500px;
+			position: absolute;
+			top: 200px;
+			left: 50px;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container" style="margin-top: 250px;">
+	<div id="hostname" class="">Hostname</div>
+	<div id="hour" class="">Hour</div>
+	<div class="row">
+		<div class="col-sm-4 col-sm-offset-4">
+			<div class="panel panel-default">
+				<div class="panel-body" style="padding:40px; padding-top: 20px; text-align:center;">
+					<h3 style="margin-bottom: 30px;"><img src="logo.png" style="" alt="logo"/></h3>
+					<div class="alert alert-danger" id="messages"></div>
+					<form action="javascript: handle_input()" id="entryUserForm">
+						<div class="input-group">
+							<span class="input-group-addon">Username</span>
+							<input class="form-control" type="text" placeholder="" name="entryUser" id="entryUser"/>
+						</div>
+					</form>
+					<form action="javascript: handle_input()" id="entryPassForm">
+						<div class="input-group">
+							<span class="input-group-addon">Password</span>
+							<input class="form-control" type="password" placeholder="" name="entryPass" id="entryPass"/>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="game" style="display: none"></div>
+	<!--<iframe  frameborder="0" border="0" cellspacing="0"
+        style="border-style: none;width: 100%; height: 120px;"
+        src="http://ictv.info.ucl.ac.be/screen/slideshow/14">
+	</iframe>-->
+</div>
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/blockrain.jquery.min.js"></script>
+<script src="js/konami.js"></script>
+<script>
+	/*********************************************************************/
+	/*                Callbacks for lightdm-webkit-greeter               */
+	/*********************************************************************/
+
+	/**
+	 * show_prompt callback.
+	 */
+	function show_prompt(text, type) {
+		$('#entryPass').val('');
+		$('#entryUser').val('');
+		
+		if(type == "text") {
+			$('#entryUserForm').show();
+			$('#entryPassForm').hide();
+			$('#entryUser').focus();
+		}
+		else {
+			$('#entryPassForm').show();
+			$('#entryUserForm').hide();
+			$('#entryPass').focus();	
+		}
+	}
+
+	/**
+	 * show_message callback.
+	 */
+	function show_message(text, type) {
+		clear_messages();
+		if (text.length == 0)
+			return;
+		if(type == "error")
+			$('#messages').addClass('alert-warning');
+		else
+			$('#messages').addClass('alert-danger');
+		$('#messages').html(text);
+		$('#messages').show();
+	}
+
+	/**
+	 * authentication_complete callback.
+	 */
+	function authentication_complete() {
+		if (lightdm.is_authenticated) {
+			lightdm.start_session_sync(); // Start default session
+		} else {
+			show_message("Authentication Failed", "error");
+			setTimeout(start_authentication, 3000);
+		}
+	}
+
+	/**
+	 * autologin_timer_expired callback.
+	 */
+	function autologin_timer_expired(username) {
+		/* Stub.  Does nothing. */
+	}
+
+	/*********************************************************************/
+	/*                Functions local to this greeter                    */
+	/*********************************************************************/
+
+	/**
+	 * clear_messages
+	 */
+	function clear_messages() {
+		$('#messages').html();
+		$('#messages').hide();
+		$('#messages').removeClass('alert-info');
+		$('#messages').removeClass('alert-danger');
+	}
+
+	/**
+	 * Kickoff the authentication process
+	 */
+	function start_authentication() {
+		clear_messages();
+		lightdm.start_authentication();   // start with null userid, have pam prompt for userid.
+	}
+
+	/**
+	 * handle the input from the entry field.
+	 */
+	function handle_input() {
+		var val = "";
+		if($("#entryUser").is(":visible"))
+			val = $("#entryUser").val();
+		else
+			val = $("#entryPass").val();
+		if(val == "")
+			return;
+		lightdm.respond(val);
+	}
+	
+	function startTime() {
+		var today = new Date();
+		var h = today.getHours();
+		var m = today.getMinutes();
+		var s = today.getSeconds();
+		m = checkTime(m);
+		s = checkTime(s);
+		$('#hour').html(h + ":" + m + ":" + s);
+		var t = setTimeout(startTime, 500);
+	}
+	
+	function checkTime(i) {
+		if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+		return i;
+	}
+
+</script>
+<script src="js/mock.js"></script>
+<script>
+	start_authentication();
+	startTime();
+	$('#hostname').html(lightdm.hostname);
+	/*var easter_egg = new Konami(function() {
+		$('.game').blockrain({theme: "retro"});
+		$('.game').show();
+		$('.game').blockrain('start');
+	});*/
+</script>
+</body>
+</html>
