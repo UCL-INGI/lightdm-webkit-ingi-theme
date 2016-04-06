@@ -1,0 +1,131 @@
+#ictv_container 
+{
+	position: absolute;
+    width: 700px;
+    bottom: 100px;
+    left: 20px;
+}
+
+.ICTV
+{
+    padding-bottom: 20px;
+}
+
+.ICTV .carousel-inner
+{
+    height: 400px;
+}
+
+.ICTV .carousel-control
+{
+    text-shadow: none;
+    display: none;
+}
+
+.ICTV .carousel-control.right, .ICTV .carousel-control.left
+{
+	background-image: none !important;
+    filter: none !important;
+}
+
+.ICTV .carousel-control .glyphicon-chevron-right, .ICTV .carousel-control .glyphicon-chevron-left, .ICTV .carousel-control .icon-next, .ICTV .carousel-control .icon-prev
+{
+    color: #006589;
+}
+
+.ICTV .carousel-control .icon-next:before
+{
+    content: "\f054";
+}
+
+.ICTV .carousel-control .icon-prev:before
+{
+    content: "\f053";
+}
+
+.ICTV .glyphicon-chevron-right:before, .ICTV .icon-next:before
+{
+    padding-left: 15px; /* fix for bootstrap. I should open a ticket for that. */
+}
+
+.ICTV .carousel-indicators
+{
+    bottom: -14px;
+}
+
+.ICTV .carousel-indicators .active
+{
+    background-color: white;
+    width: 12px;
+    height: 12px;
+    margin: 1px;
+}
+
+.ICTV .carousel-indicators li
+{
+    border: 1px solid white;
+    -webkit-transition: .6s ease-in-out background-color;
+    transition: .6s ease-in-out background-color;
+    width: 12px;
+    height: 12px;
+    margin: 1px;
+}
+
+.ICTV .carousel-inner .item
+{
+    -webkit-transition: .6s ease-in-out opacity;
+    transition: .6s ease-in-out opacity;
+    display: none;
+    position: absolute;
+    top:0;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 0;
+
+    line-height: 240px;
+    text-align: center;
+    width: 700px;
+    height: 400px;
+    margin: auto;
+}
+
+.ICTV .carousel-inner .item img
+{
+    display: inline-block;
+    vertical-align: middle;
+
+    max-height: 100%;
+    max-width: 700px;
+    width: auto;
+    height: auto;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.ICTV .carousel-inner > .active, .ICTV .carousel-inner > .prev, .ICTV .carousel-inner > .next
+{
+    display: block;
+}
+
+.ICTV .carousel-inner > .active
+{
+    opacity: 1;
+}
+
+.ICTV .carousel-inner > .next, .ICTV .carousel-inner > .prev
+{
+    opacity: 0;
+}
+
+.ICTV .carousel-inner > .next.left, .ICTV .carousel-inner > .prev.right
+{
+    opacity: 1;
+}
+
+.ICTV .carousel-inner > .active.left, .ICTV .carousel-inner > .active.right
+{
+    opacity: 0;
+}
