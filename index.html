@@ -46,8 +46,8 @@
 			width: 250px;
 			height: 500px;
 			position: absolute;
-			top: 200px;
-			left: 50px;
+			top: 20px;
+			left: 250px;
 		}
 	</style>
 </head>
@@ -204,11 +204,21 @@
 	$.ajax( "https://wiki.student.info.ucl.ac.be/weather/ICTV_lightdm.php" ).done(function(data) {
 		$('#ictv_container').html(data);
 	});
-	/*var easter_egg = new Konami(function() {
-		$('.game').blockrain({theme: "retro"});
-		$('.game').show();
-		$('.game').blockrain('start');
-	});*/
+    var easter_egg = new Konami(function() {
+        $('.game').blockrain({theme: "retro"});
+        $('.game').show();
+        $('.game').blockrain('start');
+        $('.game').blockrain('controls', true);
+        $(document).unbind('keydown.esc-handler').bind('keydown.esc-handler', function(evt) {
+            if(evt.keyCode==27) {
+                $('.game').blockrain('controls', false);
+                $('.game').hide();
+                $(document).unbind('keydown.esc-handler');
+                return false;
+            }
+            return true;
+        })
+    });
 </script>
 </body>
 </html>
