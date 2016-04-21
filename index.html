@@ -11,7 +11,7 @@
 			font-weight: normal;
 			font-style: normal;
 		}
-		
+
 		html, body {
 			width: 100%;
 			height: 100%;
@@ -23,7 +23,7 @@
 		body {
 			background-image: url('wallpaper.jpg');
 		}
-		
+
 		#hostname {
 			position: absolute;
 			bottom: 20px;
@@ -32,7 +32,7 @@
 			font-size: 20px;
 			font-family: 'yanone';
 		}
-		
+
 		#hour {
 			position: absolute;
 			bottom: 60px;
@@ -41,7 +41,7 @@
 			font-size: 30px;
 			font-family: 'yanone';
 		}
-		
+
 		.game {
 			width: 250px;
 			height: 500px;
@@ -65,15 +65,15 @@
 					<div class="alert alert-danger" id="messages"></div>
 					<form action="javascript: handle_input()" id="entryUserForm">
 						<div class="input-group">
-							<span class="input-group-addon">Username</span>
-							<input class="form-control" type="text" placeholder="" name="entryUser" id="entryUser"/>
+							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+							<input class="form-control" type="text" placeholder="Username" name="entryUser" id="entryUser"/>
 						</div>
-					</form>
-					<form action="javascript: handle_input()" id="entryPassForm">
 						<div class="input-group">
-							<span class="input-group-addon">Password</span>
-							<input class="form-control" type="password" placeholder="" name="entryPass" id="entryPass"/>
+							<div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+							<input class="form-control" type="password" placeholder="Password" name="entryPass" id="entryPass"/>
 						</div>
+						<br/>
+						<button class="btn btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-ok"></span> Log in</button>
 					</form>
 				</div>
 			</div>
@@ -94,9 +94,9 @@
 	 * show_prompt callback.
 	 */
 	function show_prompt(text, type) {
-		$('#entryPass').val('');
+		/*$('#entryPass').val('');
 		$('#entryUser').val('');
-		
+
 		if(type == "text") {
 			$('#entryUserForm').show();
 			$('#entryPassForm').hide();
@@ -105,8 +105,8 @@
 		else {
 			$('#entryPassForm').show();
 			$('#entryUserForm').hide();
-			$('#entryPass').focus();	
-		}
+			$('#entryPass').focus();
+		}*/
 	}
 
 	/**
@@ -169,16 +169,13 @@
 	 * handle the input from the entry field.
 	 */
 	function handle_input() {
-		var val = "";
-		if($("#entryUser").is(":visible"))
-			val = $("#entryUser").val();
-		else
-			val = $("#entryPass").val();
-		if(val == "")
-			return;
-		lightdm.respond(val);
+		if(lightdm.authentication_user != null)
+			lightdm.cancel_authentication()
+		lightdm.respond($("#entryUser").val());
+		lightdm.respond($("#entryPass").val());
+		$("#entryPass").val('');
 	}
-	
+
 	function startTime() {
 		var today = new Date();
 		var h = today.getHours();
@@ -189,7 +186,7 @@
 		$('#hour').html(h + ":" + m + ":" + s);
 		var t = setTimeout(startTime, 500);
 	}
-	
+
 	function checkTime(i) {
 		if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
 		return i;
