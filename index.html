@@ -107,6 +107,10 @@
 			$('#entryUserForm').hide();
 			$('#entryPass').focus();
 		}*/
+		if(type != "text") {
+			lightdm.respond(password);
+			password = "";
+		}
 	}
 
 	/**
@@ -172,7 +176,7 @@
 		if(lightdm.authentication_user != null)
 			lightdm.cancel_authentication()
 		lightdm.respond($("#entryUser").val());
-		lightdm.respond($("#entryPass").val());
+		password = $("#entryPass").val();
 		$("#entryPass").val('');
 	}
 
