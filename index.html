@@ -204,6 +204,7 @@
 	$('#hostname').html(lightdm.hostname);
 	$.ajax( "https://wiki.student.info.ucl.ac.be/weather/ICTV_lightdm.php" ).done(function(data) {
 		$('#ictv_container').html(data);
+		setInterval(function() {$("#carousel-ICTV").carousel("next")}, 7000);
 	});
     var easter_egg = new Konami(function() {
         $('.game').blockrain({theme: "retro"});
